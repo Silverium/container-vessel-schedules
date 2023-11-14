@@ -1,0 +1,29 @@
+{
+  "name": "container-vessel-schedules",
+  "version": "1.0.0",
+  "description": "Coding exercise retrieving and analysing container vessel schedules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silverium/container-vessel-schedules.git"
+  },
+  "keywords": [
+    "node",
+    "typescript",
+    "cli",
+    "ink"
+  ],
+  "author": "Soldeplata Saketos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Silverium/container-vessel-schedules/issues"
+  },
+  "homepage": "https://github.com/Silverium/container-vessel-schedules#readme",
+  "dependencies": {
+    "ink": "^4.4.1",
+    "react": "^18.2.0"
+  }
+}
