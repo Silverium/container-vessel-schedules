@@ -15,6 +15,7 @@ type PortCall = {
 	port: Port;
 	arrival: string;
 	departure: string;
+	isOmitted: boolean;
 	duration?: number;
 };
 
@@ -43,9 +44,11 @@ export default function App() {
 					if (!portCallsByPort.current[portCall.port.id]) {
 						portCallsByPort.current[portCall.port.id] = [];
 					}
-					// extend the port call with the duration in port
-					portCall.duration = new Date(portCall.departure).getTime() - new Date(portCall.arrival).getTime();
-					portCallsByPort.current[portCall.port.id]!.push(portCall);
+					if (!portCall.isOmitted) {
+						// extend the port call with the duration in port
+						portCall.duration = new Date(portCall.departure).getTime() - new Date(portCall.arrival).getTime();
+						portCallsByPort.current[portCall.port.id]!.push(portCall);
+					}
 				});
 			});
 			setVessels(vesselsData);
