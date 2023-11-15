@@ -42,11 +42,6 @@ Execute it with node
 node dist/cli
 ```
 
-Or on the fly with `ts-node`
-
-```bash
-ts-node source/cli
-```
 
 ## Test
 
