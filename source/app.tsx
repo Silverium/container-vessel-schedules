@@ -136,9 +136,9 @@ export default function App() {
 				</Box>
 			</Box>
 			<Box flexDirection='column'>
-				<Box flexDirection='column' borderStyle="doubleSingle">
+				<Box flexDirection='column' borderStyle="doubleSingle" alignItems='center'>
 					<Text color="yellow">
-						Duration of percentiles for each port:
+						Duration of percentiles for each port
 					</Text>
 				</Box>
 				<Box flexDirection='column' borderStyle="classic" paddingX={2} >
@@ -159,7 +159,7 @@ export default function App() {
 						return (
 							<Box flexDirection='row' key={`port-${vessel.portId}-${index}`} justifyContent='space-between'>
 								<Text color="green">
-									{vessel.portId}:
+									{vessel.portId}
 								</Text>
 								{percentileValues.map((percentile) => {
 									return (
