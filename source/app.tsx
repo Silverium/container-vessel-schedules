@@ -23,9 +23,22 @@ type Schedule = {
 	vessel: Vessel;
 	portCalls: PortCall[];
 }
+// This is a super nice feature of latest versions of TypeScript
+type Percentile = `percentile${number}`;
+type PercentileRecord = Record<Percentile, string>;
+
+type PortCallStats = {
+	portId: string;
+	numPortCalls: number;
+} & PercentileRecord;
+
+const percentileValues = [0.05, 0.2, 0.5, 0.75, 0.9];
+function calculatePercentile(percentile: number, portCalls: PortCall[]) {
+	return ((portCalls[Math.floor(portCalls.length * percentile)]?.duration || 0) / 1000 / 60 / 60).toFixed(2);
+}
 export default function App() {
 	const [appState, setAppState] = useState("Retrieving data...");
-	const [vessels, setVessels] = useState<any>([]);
+	const [portCallStats, setPortCallStats] = useState<PortCallStats[]>([]);
 	const portCallsByImo = React.useRef<Record<Vessel["imo"], Vessel>>({});
 	const portCallsByPort = React.useRef<Record<Port["id"], PortCall[]>>({});
 	useEffect(() => {
@@ -51,21 +64,26 @@ export default function App() {
 					}
 				});
 			});
-			setVessels(vesselsData);
 
 			setAppState("Data processed!");
 			const portCallsByPortArray = Object.entries(portCallsByPort.current).map(([portId, portCalls]) => {
 				// sort the port calls by duration in port
 				portCalls.sort((a, b) => a.duration! - b.duration!);
-				// set the percentile50th for the port
-				const percentile50th = ((portCalls[Math.floor(portCalls.length * 0.5)]?.duration || 0) / 1000 / 60 / 60).toFixed(2);
+
+				const percentileRecord: PercentileRecord = {};
+				// calculate the percentiles
+				percentileValues.forEach((percentile) => {
+					percentileRecord[`percentile${percentile * 100}`] = calculatePercentile(percentile, portCalls);
+				});
+
 				return {
 					portId,
 					numPortCalls: portCalls.length,
-					percentile50th
+					...percentileRecord
 				};
 			}).sort((a, b) => b.numPortCalls - a.numPortCalls);
-			setVessels(portCallsByPortArray);
+
+			setPortCallStats(portCallsByPortArray);
 		}
 		getVessels();
 	}, []);
@@ -74,7 +92,7 @@ export default function App() {
 			<Text color="cyanBright">
 				{appState}
 			</Text>
-			<Text>Total ports: {vessels.length}</Text>
+			<Text>Total ports: {portCallStats.length}</Text>
 			<Box gap={5}>
 				<Box flexDirection='column' gap={2} borderStyle="single">
 					<Box borderStyle="doubleSingle">
@@ -83,7 +101,7 @@ export default function App() {
 						</Text>
 					</Box>
 
-					{vessels.slice(0, 5).map((vessel: any, index: number) => {
+					{portCallStats.slice(0, 5).map((vessel: any, index: number) => {
 						return (
 							<Box flexDirection='row' key={`port-${vessel.portId}-${index}`} gap={1}>
 								<Text color="green">
@@ -91,9 +109,6 @@ export default function App() {
 								</Text>
 								<Text color="magenta">
 									{vessel.numPortCalls}
-								</Text>
-								<Text color="magenta">
-									50th: {vessel.percentile50th}h
 								</Text>
 							</Box>
 						)
@@ -106,7 +121,7 @@ export default function App() {
 							Bottom 5 ports with fewest port calls:
 						</Text>
 					</Box>
-					{vessels.slice(-5).map((vessel: any, index: number) => {
+					{portCallStats.slice(-5).map((vessel: any, index: number) => {
 						return (
 							<Box flexDirection='row' key={`port-${vessel.portId}-${index}`} gap={1}>
 								<Text color="green">
@@ -115,6 +130,45 @@ export default function App() {
 								<Text color="magenta">
 									{vessel.numPortCalls}
 								</Text>
+							</Box>
+						)
+					})}
+				</Box>
+			</Box>
+			<Box flexDirection='column'>
+				<Box flexDirection='column' borderStyle="doubleSingle">
+					<Text color="yellow">
+						Duration of percentiles for each port:
+					</Text>
+				</Box>
+				<Box flexDirection='column' borderStyle="classic" paddingX={2} >
+					<Box flexDirection='row' borderStyle="doubleSingle" borderRight={false} borderLeft={false} justifyContent='space-between'>
+						<Text color="cyanBright">
+							Port
+						</Text>
+						{percentileValues.map((percentile) => {
+							return (
+								<Text color="cyanBright" key={`percentile-${percentile}`}>
+									{percentile * 100}%
+								</Text>
+							)
+						}
+						)}
+					</Box>
+					{portCallStats.map((vessel, index: number) => {
+						return (
+							<Box flexDirection='row' key={`port-${vessel.portId}-${index}`} justifyContent='space-between'>
+								<Text color="green">
+									{vessel.portId}:
+								</Text>
+								{percentileValues.map((percentile) => {
+									return (
+										<Text color="magenta" key={`percentile-${percentile}-${index}`}>
+											{vessel[`percentile${percentile * 100}` as `percentile${number}`]}h
+										</Text>
+									)
+								}
+								)}
 							</Box>
 						)
 					})}
