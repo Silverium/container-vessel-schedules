@@ -32,6 +32,12 @@ type PortCallStats = {
 } & PercentileRecord;
 
 const percentileValues = [0.05, 0.2, 0.5, 0.75, 0.9];
+/**
+ * Calculates the percentile for a given array of port calls using the nearest-rank method
+ * as described here: https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method
+ * With an ascending ordered array of portCalls by the duration in port.
+ * The returned value is in hours with 2 decimal places.
+ */
 function calculatePercentile(percentile: number, portCalls: PortCall[]) {
 	return (
 		(portCalls[Math.floor(portCalls.length * percentile)]?.duration || 0) /
