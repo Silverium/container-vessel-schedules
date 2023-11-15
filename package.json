@@ -10,6 +10,7 @@
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
+		"prettier": "prettier . -w",
 		"test": "prettier --check . && xo && ava"
 	},
 	"files": [
@@ -52,6 +53,5 @@
 		"rules": {
 			"react/prop-types": "off"
 		}
-	},
-	"prettier": "@vdemedes/prettier-config"
+	}
 }

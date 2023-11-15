@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Text} from 'ink';
+import React, { useEffect, useState } from "react";
+import { Box, Text } from "ink";
 
 type Vessel = {
 	imo: number;
@@ -41,27 +41,27 @@ function calculatePercentile(percentile: number, portCalls: PortCall[]) {
 	).toFixed(2);
 }
 export default function App() {
-	const [appState, setAppState] = useState('Retrieving data...');
+	const [appState, setAppState] = useState("Retrieving data...");
 	const [portCallStats, setPortCallStats] = useState<PortCallStats[]>([]);
-	const portCallsByImo = React.useRef<Record<Vessel['imo'], Vessel>>({});
-	const portCallsByPort = React.useRef<Record<Port['id'], PortCall[]>>({});
+	const portCallsByImo = React.useRef<Record<Vessel["imo"], Vessel>>({});
+	const portCallsByPort = React.useRef<Record<Port["id"], PortCall[]>>({});
 	useEffect(() => {
 		const getVessels = async () => {
 			const vesselsData = (await fetch(
-				'https://import-coding-challenge-api.portchain.com/api/v2/vessels',
-			).then(response => response.json())) as Vessel[];
-			const promises = vesselsData.map(vessel => {
+				"https://import-coding-challenge-api.portchain.com/api/v2/vessels"
+			).then((response) => response.json())) as Vessel[];
+			const promises = vesselsData.map((vessel) => {
 				const vesselData = fetch(
-					`https://import-coding-challenge-api.portchain.com/api/v2/schedule/${vessel.imo}`,
-				).then(response => response.json());
+					`https://import-coding-challenge-api.portchain.com/api/v2/schedule/${vessel.imo}`
+				).then((response) => response.json());
 				return vesselData as Promise<Schedule>;
 			});
 			const vesselsWithPortCalls = await Promise.all(promises);
-			setAppState('Data retrieved!');
+			setAppState("Data retrieved!");
 			// create a helper object to store the port calls for each vessel
-			vesselsWithPortCalls.forEach(schedule => {
+			vesselsWithPortCalls.forEach((schedule) => {
 				portCallsByImo.current[schedule.vessel.imo] = schedule.vessel;
-				schedule.portCalls.forEach(portCall => {
+				schedule.portCalls.forEach((portCall) => {
 					if (!portCallsByPort.current[portCall.port.id]) {
 						portCallsByPort.current[portCall.port.id] = [];
 					}
@@ -75,7 +75,7 @@ export default function App() {
 				});
 			});
 
-			setAppState('Data processed!');
+			setAppState("Data processed!");
 			const portCallsByPortArray = Object.entries(portCallsByPort.current)
 				.map(([portId, portCalls]) => {
 					// sort the port calls by duration in port
@@ -83,7 +83,7 @@ export default function App() {
 
 					const percentileRecord: PercentileRecord = {};
 					// calculate the percentiles
-					percentileValues.forEach(percentile => {
+					percentileValues.forEach((percentile) => {
 						percentileRecord[`percentile${percentile * 100}`] =
 							calculatePercentile(percentile, portCalls);
 					});
@@ -158,7 +158,7 @@ export default function App() {
 						justifyContent="space-between"
 					>
 						<Text color="cyanBright">Port</Text>
-						{percentileValues.map(percentile => {
+						{percentileValues.map((percentile) => {
 							return (
 								<Text color="cyanBright" key={`percentile-${percentile}`}>
 									{percentile * 100}%
@@ -174,7 +174,7 @@ export default function App() {
 								justifyContent="space-between"
 							>
 								<Text color="green">{vessel.portId}</Text>
-								{percentileValues.map(percentile => {
+								{percentileValues.map((percentile) => {
 									return (
 										<Text
 											color="magenta"
