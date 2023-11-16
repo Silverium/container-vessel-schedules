@@ -23,6 +23,7 @@ node dist/cli
 ```
 
 Or run it with
+
 ```bash
 npm start
 ```

@@ -30,7 +30,6 @@ export default function App() {
 							);
 						})}
 					</Box>
-
 				</Box>
 				<Box flexDirection="column" borderStyle="single">
 					<Box borderStyle="doubleSingle">
