@@ -11,6 +11,7 @@
 		"build": "tsc",
 		"dev": "tsc --watch",
 		"prettier": "prettier . -w",
+		"start": "node dist/cli.js",
 		"test": "vitest"
 	},
 	"files": [
