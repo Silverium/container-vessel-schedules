@@ -72,7 +72,7 @@ export default function App() {
 						{percentileValues.map((percentile) => {
 							return (
 								<Text color="cyanBright" key={`percentile-${percentile}`}>
-									{percentile * 100}%
+									{percentile * 100}th
 								</Text>
 							);
 						})}
