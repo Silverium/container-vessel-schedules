@@ -42,7 +42,6 @@ Execute it with node
 node dist/cli
 ```
 
-
 ## Test
 
 Run

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text } from "ink";
+import calculatePercentile from "./utils/calculatePercentile.js";
+import formatPortCallDuration from "./utils/formatPortCallDuration.js";
 
 // This is a super nice feature of latest versions of TypeScript
 type Percentile = `percentile${number}`;
-type PercentileRecord = Record<Percentile, string>;
+type PercentileRecord = Record<Percentile, number>;
 
 type PortCallStats = {
 	portId: string;
@@ -11,20 +13,6 @@ type PortCallStats = {
 } & PercentileRecord;
 
 const percentileValues = [0.05, 0.2, 0.5, 0.75, 0.9];
-/**
- * Calculates the percentile for a given array of port calls using the nearest-rank method
- * as described here: https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method
- * With an ascending ordered array of portCalls by the duration in port.
- * The returned value is in hours with 2 decimal places.
- */
-function calculatePercentile(percentile: number, portCalls: PortCall[]) {
-	return (
-		(portCalls[Math.floor(portCalls.length * percentile)]?.duration || 0) /
-		1000 /
-		60 /
-		60
-	).toFixed(2);
-}
 export default function App() {
 	const [appState, setAppState] = useState("Retrieving data...");
 	const [portCallStats, setPortCallStats] = useState<PortCallStats[]>([]);
@@ -166,12 +154,10 @@ export default function App() {
 											key={`percentile-${percentile}-${index}`}
 										>
 											{
-												vessel[
-												`percentile${percentile * 100
-												}` as `percentile${number}`
-												]
+												formatPortCallDuration(vessel[
+													`percentile${percentile * 100}`
+												])
 											}
-											h
 										</Text>
 									);
 								})}
