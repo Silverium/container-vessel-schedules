@@ -11,7 +11,7 @@ export default function App() {
 		<Box flexDirection="column">
 			<Text color="cyanBright">{appState}</Text>
 			<Text>Total ports: {portCallStats.length}</Text>
-			<Box gap={5}>
+			<Box gap={5} justifyContent="space-around">
 				<Box flexDirection="column" borderStyle="single">
 					<Box borderStyle="doubleSingle">
 						<Text color="green">Top 5 ports with most port calls:</Text>
@@ -22,7 +22,7 @@ export default function App() {
 								<Box
 									flexDirection="row"
 									key={`port-${vessel.portId}-${index}`}
-									paddingX={3}
+									justifyContent="center"
 								>
 									<Text color="green">{vessel.portId}:</Text>
 									<Text color="magenta">{vessel.numPortCalls}</Text>
@@ -42,7 +42,7 @@ export default function App() {
 								<Box
 									flexDirection="row"
 									key={`port-${vessel.portId}-${index}`}
-									paddingX={3}
+									justifyContent="center"
 								>
 									<Text color="green">{vessel.portId}:</Text>
 									<Text color="magenta">{vessel.numPortCalls}</Text>
