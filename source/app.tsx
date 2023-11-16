@@ -12,40 +12,44 @@ export default function App() {
 			<Text color="cyanBright">{appState}</Text>
 			<Text>Total ports: {portCallStats.length}</Text>
 			<Box gap={5}>
-				<Box flexDirection="column" gap={2} borderStyle="single">
+				<Box flexDirection="column" borderStyle="single">
 					<Box borderStyle="doubleSingle">
 						<Text color="green">Top 5 ports with most port calls:</Text>
 					</Box>
+					<Box flexDirection="column">
+						{portCallStats.slice(0, 5).map((vessel: any, index: number) => {
+							return (
+								<Box
+									flexDirection="row"
+									key={`port-${vessel.portId}-${index}`}
+									paddingX={3}
+								>
+									<Text color="green">{vessel.portId}:</Text>
+									<Text color="magenta">{vessel.numPortCalls}</Text>
+								</Box>
+							);
+						})}
+					</Box>
 
-					{portCallStats.slice(0, 5).map((vessel: any, index: number) => {
-						return (
-							<Box
-								flexDirection="row"
-								key={`port-${vessel.portId}-${index}`}
-								gap={1}
-							>
-								<Text color="green">{vessel.portId}:</Text>
-								<Text color="magenta">{vessel.numPortCalls}</Text>
-							</Box>
-						);
-					})}
 				</Box>
-				<Box flexDirection="column" gap={2} borderStyle="single">
+				<Box flexDirection="column" borderStyle="single">
 					<Box borderStyle="doubleSingle">
 						<Text color="gray">Bottom 5 ports with fewest port calls:</Text>
 					</Box>
-					{portCallStats.slice(-5).map((vessel: any, index: number) => {
-						return (
-							<Box
-								flexDirection="row"
-								key={`port-${vessel.portId}-${index}`}
-								gap={1}
-							>
-								<Text color="green">{vessel.portId}:</Text>
-								<Text color="magenta">{vessel.numPortCalls}</Text>
-							</Box>
-						);
-					})}
+					<Box flexDirection="column">
+						{portCallStats.slice(-5).map((vessel: any, index: number) => {
+							return (
+								<Box
+									flexDirection="row"
+									key={`port-${vessel.portId}-${index}`}
+									paddingX={3}
+								>
+									<Text color="green">{vessel.portId}:</Text>
+									<Text color="magenta">{vessel.numPortCalls}</Text>
+								</Box>
+							);
+						})}
+					</Box>
 				</Box>
 			</Box>
 			<Box flexDirection="column">
