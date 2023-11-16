@@ -1,27 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text } from "ink";
 
-type Vessel = {
-	imo: number;
-	name: string;
-};
-type Port = {
-	id: string;
-	name: string;
-};
-
-type PortCall = {
-	port: Port;
-	arrival: string;
-	departure: string;
-	isOmitted: boolean;
-	duration?: number;
-};
-
-type Schedule = {
-	vessel: Vessel;
-	portCalls: PortCall[];
-};
 // This is a super nice feature of latest versions of TypeScript
 type Percentile = `percentile${number}`;
 type PercentileRecord = Record<Percentile, string>;
@@ -188,9 +167,8 @@ export default function App() {
 										>
 											{
 												vessel[
-													`percentile${
-														percentile * 100
-													}` as `percentile${number}`
+												`percentile${percentile * 100
+												}` as `percentile${number}`
 												]
 											}
 											h
